@@ -14,7 +14,7 @@ const config = require('./src/config-dev.json');
 module.exports = {
     entry: "./index.js",
     output: {
-        filename: 'bundle.js',
+        filename: '[name].js',
         path: path.resolve(__dirname, 'public')
     },
     context: path.resolve(__dirname, 'src'),
@@ -22,7 +22,7 @@ module.exports = {
         contentBase: path.resolve(__dirname, 'public/assets'),
         stats: 'errors-only',
         open: true,
-        port: 8080,
+        //port: 8080,
         compress: true
     },
     devtool: 'inline-source-map',
@@ -32,7 +32,12 @@ module.exports = {
             template: 'index.html'
         }),
         extractPlugin,
-        new webpack.DefinePlugin({config: JSON.stringify(config)})
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'common'
+        }),
+        new webpack.DefinePlugin({
+            config: JSON.stringify(config)
+        })
     ],
     module: {
         rules: [{
