@@ -33,11 +33,11 @@
     "sass-loader": "^6.0.6",
     "style-loader": "^0.20.1",
     "webpack": "^3.10.0",
+    "clean-webpack-plugin": "^0.1.18",
     "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "clean-webpack-plugin": "^0.1.18",
     "material-ui": "^0.20.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",

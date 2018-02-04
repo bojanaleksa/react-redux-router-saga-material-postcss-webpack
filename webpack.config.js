@@ -1,9 +1,7 @@
 var path = require('path');
 const webpack = require('webpack');
 
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const extractPlugin = new ExtractTextPlugin({
     filename: './style.css'
@@ -27,14 +25,10 @@ module.exports = {
     },
     devtool: 'inline-source-map',
     plugins: [
-        new CleanWebpackPlugin(['public']),
         new HtmlWebpackPlugin({
             template: 'index.html'
         }),
         extractPlugin,
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'common'
-        }),
         new webpack.DefinePlugin({
             config: JSON.stringify(config)
         })
@@ -54,26 +48,6 @@ module.exports = {
             test: /\.html$/,
             use: ['html-loader']
         }, {
-            test: /\.scss$/,
-            include: /src/,
-            exclude: /node_modules/,
-            use: extractPlugin.extract({
-                use: [{
-                    loader: 'css-loader',
-                    options: {
-                        sourceMap: true
-                    }
-                }, {
-                    loader: 'sass-loader',
-                    options: {
-                        sourceMap: true
-                    }
-                }, {
-                    loader: 'postcss-loader'
-                }],
-                fallback: 'style-loader'
-            })
-        }, {
             test: /\.(jpg|png|gif|svg)$/,
             use: [
             {
@@ -86,6 +60,14 @@ module.exports = {
         }, {
             test: /\.(woff|woff2|eot|ttf|otf)$/,
             use: ['file-loader']
+        }, {
+            test: /\.scss$/,
+            include: /src/,
+            exclude: /node_modules/,
+            use: extractPlugin.extract({
+                use: ["css-loader", "sass-loader", "postcss-loader"],
+                fallback: 'style-loader'
+            })
         }]
     }
 }
