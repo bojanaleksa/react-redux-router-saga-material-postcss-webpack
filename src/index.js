@@ -2,16 +2,25 @@ import "babel-polyfill";
 import './stylesheets/main.scss';
 import React from "react";
 import ReactDOM from "react-dom";
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { Provider } from "react-redux";
-import { store } from "./store.js";
-import router from "./router.js";
+import { AppContainer } from 'react-hot-loader'
 
-ReactDOM.render(
-  <Provider store={store}>
-  	<MuiThemeProvider>
-      {router}
-    </MuiThemeProvider>
-  </Provider>,
-  document.getElementById('app')
-);
+import App from './App';
+
+const render = Component => {
+  ReactDOM.render(
+    <AppContainer>
+      <Component />
+    </AppContainer>,
+    document.getElementById('app'),
+  )
+}
+
+render(App)
+
+// Webpack Hot Module Replacement API
+if (module.hot) {
+  module.hot.accept('./App', () => {
+  	const NextApp = require('./App').default;
+    render(NextApp)
+  })
+}

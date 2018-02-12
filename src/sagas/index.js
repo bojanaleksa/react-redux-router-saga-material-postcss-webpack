@@ -3,15 +3,19 @@ import actions from '../actions'
 import api from '../api';
 
 
-function* basicInit() {
-    try {
-        const data = yield call(api.basicFunction);
-        yield put({ type: actions.BASIC_ACTION_SUCCESS, data })
+function* generic(...data) {
+    let func = data[0];
+    let params = data[1];
+    let type = params.type;
+    delete params.type;
+	try {
+        const data = yield call(api[func], params);
+        yield put({ type: actions[type] + actions.SUCCESS, data });
     } catch (error) {
-        yield put({ type: actions.BASIC_ACTION_ERROR, error })
+        yield put({ type: actions[type] + actions.ERROR, error })
     }
 }
 
 export function* sagas() {
-    yield takeLatest(actions.BASIC_ACTION, basicInit);
+    yield takeLatest(actions.API + '*', generic);
 }

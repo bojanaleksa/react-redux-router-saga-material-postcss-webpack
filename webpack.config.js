@@ -10,7 +10,10 @@ const extractPlugin = new ExtractTextPlugin({
 const config = require('./src/config-dev.json');
 
 module.exports = {
-    entry: "./index.js",
+    entry: [
+        'react-hot-loader/patch',
+        "./index.js"
+    ],
     output: {
         filename: '[name].js',
         path: path.resolve(__dirname, 'public')
@@ -18,10 +21,12 @@ module.exports = {
     context: path.resolve(__dirname, 'src'),
     devServer: {
         contentBase: path.resolve(__dirname, 'public/assets'),
-        stats: 'errors-only',
+        //stats: 'errors-only',
         open: true,
         //port: 8080,
-        compress: true
+        compress: true,
+        hot: true,
+        historyApiFallback: true
     },
     devtool: 'inline-source-map',
     plugins: [
@@ -29,6 +34,7 @@ module.exports = {
             template: 'index.html'
         }),
         extractPlugin,
+        new webpack.HotModuleReplacementPlugin(),
         new webpack.DefinePlugin({
             config: JSON.stringify(config)
         })
