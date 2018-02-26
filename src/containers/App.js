@@ -2,9 +2,11 @@ import { connect } from 'react-redux'
 import TheComponent from '../components/App';
 import actions from '../actions';
 
+import { getPath } from '../selectors';
+
 const mapStateToProps = (state, ownProps) => {
     return {
-    	location: state.routing.locationBeforeTransitions.pathname
+    	location: getPath(state)
     }
 }
 
